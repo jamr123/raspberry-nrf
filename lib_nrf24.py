@@ -186,14 +186,14 @@ class NRF24:
         # On rpi, only bus 0 is supported here, not bus 1 of the model B plus
         self.GPIO = gpio   # the GPIO module
         self.spidev = spidev # the spidev object/instance
-        self.channel = 76
+        self.channel = 0x64
         self.data_rate = NRF24.BR_1MBPS
         self.wide_band = False # 2Mbs data rate in use?
         self.p_variant = False # False for RF24L01 and true for RF24L01P (nrf24l01+)
         self.payload_size = 5 #*< Fixed size of payloads
-        self.ack_payload_available = False #*< Whether there is an ack payload waiting
-        self.dynamic_payloads_enabled = False #*< Whether dynamic payloads are enabled.
-        self.ack_payload_length = 5 #*< Dynamic size of pending ack payload.
+        self.ack_payload_available = True #*< Whether there is an ack payload waiting
+        self.dynamic_payloads_enabled = True #*< Whether dynamic payloads are enabled.
+        self.ack_payload_length = 32 #*< Dynamic size of pending ack payload.
         self.pipe0_reading_address = None #*< Last address set on pipe 0 for reading.
 
     def ce(self, level):
