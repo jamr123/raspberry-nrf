@@ -75,9 +75,9 @@ void showData() {
 }
 
 void sendPool() {
-  String stringOne = "A long integer: ";
-  char charBuf[20];
-  stringOne.toCharArray(charBuf, 20);
+  String stringOne = "hola";
+  char charBuf[5];
+  stringOne.toCharArray(charBuf, 5);
   radio.stopListening();
   
   bool ok = radio.write(&charBuf,strlen(charBuf));
