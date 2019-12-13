@@ -8,7 +8,7 @@ String stringMessage = "";
 bool newData = false;
 
 const uint64_t TX = 0xAAAAAAAA01LL;
-const uint64_t RX = 0xAAAAAAAAFFLL;
+const uint64_t RX = 0xFFFFFFFFFFLL;
 void setup(void)
 {
   while (!Serial);
@@ -23,7 +23,7 @@ void setup(void)
   radio.enableAckPayload();
   radio.enableDynamicPayloads();
   radio.setRetries(15, 15);
-  radio.setChannel(0x64);
+  radio.setChannel(1);
   radio.printDetails(); 
   radio.startListening();
   Serial.println("inicio");
