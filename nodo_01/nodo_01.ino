@@ -3,11 +3,11 @@
 #include <RF24.h>
 
 RF24 radio(9, 10);
-char receivedMessage[10];;
+char receivedMessage[5];;
 String stringMessage = "";
-int response [2];
-int numRadio = 1;
-int data = 100;
+float response [2];
+float numRadio = 1;
+float data = 100;
 
 long randNumber = 0;
 bool newData = false;
@@ -29,6 +29,7 @@ void setup(void)
   radio.enableDynamicPayloads();
   radio.setRetries(15, 15);
   radio.setChannel(0x20);
+  radio.setCRCLength(RF24_CRC_16);
   radio.printDetails();
   radio.startListening();
   Serial.println("inicio");
@@ -43,25 +44,25 @@ void loop(void)
 
 }
 
-
 void getData() {
   if ( radio.available() ) {
     radio.read( &receivedMessage, sizeof(receivedMessage) );
     stringMessage = String(receivedMessage);
-    Serial.println("recive");
     newData = true;
   }
 }
 
 void showData() {
   if (newData == true) {
-    Serial.println(stringMessage);
+    
     if (stringMessage == "SYNC") {
-      randNumber = random(0, 50000);
+      randNumber = random(0, 5000);
       Serial.println(randNumber);
       delayMicroseconds(randNumber);
+      Serial.println(stringMessage);
     }
     if (stringMessage == "POLL") {
+      Serial.println(stringMessage);
 
        sendPool();
     }
