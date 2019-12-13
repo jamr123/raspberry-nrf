@@ -5,9 +5,7 @@
 RF24 radio(9, 10);
 char receivedMessage[4];;
 String stringMessage = "";
-float response [2];
-float numRadio = 2;
-float data = 200;
+
 
 long randNumber = 0;
 bool newData = false;
@@ -77,9 +75,7 @@ void sendPool() {
 
   radio.stopListening();
 
-  response[0] = numRadio;
-  response[1] = data;
-  radio.write(response, sizeof(response));
+  radio.write("hola", 4);
 
   radio.startListening();
 
