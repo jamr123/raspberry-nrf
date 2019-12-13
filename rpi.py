@@ -23,8 +23,7 @@ def sendSync():
 def Poll(): 
     piperead=0                                                                                
     for x in range(0, device_count):
-        piperead=x+1 
-        print(x)
+
         print(piperead)
         command = "POLL"
         message = list(command)                                  
@@ -92,5 +91,5 @@ while True:
     Poll()
     cycle_number=cycle_number+1
     print("\r\n\r\n")
-    time.sleep(3)                    
+    time.sleep(5)                    
  
