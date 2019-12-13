@@ -33,7 +33,7 @@ def Poll():
             radio.startListening() 
             recv_buffer = []
             radio.read(recv_buffer, radio.getDynamicPayloadSize())
-            print(recv_buffer)
+            print(str(recv_buffer))
             radio.stopListening()
 
 
