@@ -71,11 +71,12 @@ cycle_number = 0
   
 while True: 
     signal.signal(signal.SIGINT, signal_handler)
+    radio.printDetails()
     command = "SYNC"
     message = list(command)
 
     # send a packet to receiver
     radio.write(message)
     print("Sent: {}".format(message))
-    time.sleep(1)                    
+    time.sleep(5)                    
  
