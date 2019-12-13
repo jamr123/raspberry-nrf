@@ -42,7 +42,7 @@ def Poll():
             for n in recv_buffer:
                 stringdata+=chr(n)
             dts=stringdata.split("*") 
-            print('poll from number: ' + dts[0]  +'poll data: '+dts[1])     
+            print('POLL FROM RADIO: ' + dts[0]  +' DATA: '+dts[1])     
             
 
 
@@ -86,9 +86,14 @@ cycle_number = 0
 
   
 while True: 
+    
     signal.signal(signal.SIGINT, signal_handler)
+    print("CYCLE: "+str(cycle_number ))
+    print(" ")
+    print("SYNC >>>>>>") 
     sendSync()
     time.sleep(0.1)
+    print("POLL >>>>>>") 
     Poll()
-    time.sleep(1)                    
+    time.sleep(3)                    
  

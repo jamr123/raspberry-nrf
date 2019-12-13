@@ -76,7 +76,7 @@ void showData() {
 
 void sendPool(long val) {
   
-  str1 ="01*"+String(val);
+  str1 ="00*"+String(val);
   str1.toCharArray(charBuf, 10);
   radio.stopListening();
   
