@@ -35,8 +35,8 @@ def Poll():
                                                                       
     
                     
-masterAddress = [[0xAA, 0xAA, 0xAA, 0xAA, 0xAA]]
-slaveAddress = [[0xAA, 0xAA, 0xAA, 0xAA, 0x01],[0xAA, 0xAA, 0xAA, 0xAA, 0x02],[0xAA, 0xAA, 0xAA, 0xAA, 0x03],[0xAA, 0xAA, 0xAA, 0xAA, 0x04],[0xAA, 0xAA, 0xAA, 0xAA, 0x05]]
+TX = [[0xAA, 0xAA, 0xAA, 0xAA, 0xAA]]
+RX = [[0xAA, 0xAA, 0xAA, 0xAA, 0x01],[0xAA, 0xAA, 0xAA, 0xAA, 0x02],[0xAA, 0xAA, 0xAA, 0xAA, 0x03],[0xAA, 0xAA, 0xAA, 0xAA, 0x04],[0xAA, 0xAA, 0xAA, 0xAA, 0x05]]
 
 radio = NRF24(GPIO, spidev.SpiDev())
 radio.begin(0, 25) 
@@ -49,12 +49,12 @@ radio.setAutoAck(True)
 radio.enableDynamicPayloads()
 radio.enableAckPayload()
 
-radio.openWritingPipe(pipes[1])
-radio.openReadingPipe(0, pipes[0])
-radio.openReadingPipe(1, pipes[1])
-radio.openReadingPipe(2, pipes[2])
-radio.openReadingPipe(3, pipes[3])
-radio.openReadingPipe(4, pipes[4])
+radio.openWritingPipe(masterAddress[0])
+radio.openReadingPipe(0, RX[0])
+radio.openReadingPipe(1, RX[1])
+radio.openReadingPipe(2, RX[2])
+radio.openReadingPipe(3, RX[3])
+radio.openReadingPipe(4, RX[4])
 
 radio.printDetails()
 receivedMessage = 0                          
