@@ -5,8 +5,8 @@
 RF24 radio(9, 10);
 char receivedMessage[4];;
 String stringMessage = "";
-char response[16];
-
+char response[4];
+String str;
 
 long randNumber = 0;
 bool newData = false;
@@ -64,9 +64,8 @@ void showData() {
     if (stringMessage == "POLL") {
        randNumber = random(0, 5000);
        Serial.println(randNumber);      
-       String b;
-       b = (String)randNumber;
-       b.toCharArray(response, 3);
+  
+  
        sendPool();
     }
 
@@ -77,13 +76,14 @@ void showData() {
 
 void sendPool() {
 
-
+  str="HOLA";
+  str.toCharArray(response,4);
+  char dato[]="--> DATO ";
+  strcat(dato,response);
   radio.stopListening();
-  
-  
-  radio.write(&response, sizeof(response));
-
-  radio.startListening();
+  Serial.println("Enviando datos...");
+  bool ok = radio.write(&dato,strlen(dato));
+  radio.startListening(); 
 
 }
 
