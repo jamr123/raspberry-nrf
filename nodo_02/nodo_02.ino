@@ -3,7 +3,7 @@
 #include <RF24.h>
 
 RF24 radio(9, 10);
-char receivedMessage[10];;
+char receivedMessage[4];;
 String stringMessage = "";
 float response [2];
 float numRadio = 2;
@@ -49,7 +49,7 @@ void getData() {
   if ( radio.available() ) {
     radio.read( &receivedMessage, sizeof(receivedMessage) );
     stringMessage = String(receivedMessage);
-    Serial.println(stringMessage);
+    stringMessage =stringMessage.substring(0, 4);
     newData = true;
   }
 }
@@ -61,11 +61,10 @@ void showData() {
       randNumber = random(0, 5000);
       Serial.println(randNumber);
       delayMicroseconds(randNumber);
-      Serial.println(stringMessage);
     }
     if (stringMessage == "POLL") {
-      Serial.println(stringMessage);
-
+       randNumber = random(0, 5000);
+       Serial.println(randNumber);
        sendPool();
     }
 

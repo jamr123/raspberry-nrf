@@ -32,7 +32,7 @@ def Poll():
             radio.openReadingPipe(piperead, RXMASTER[x])
             radio.startListening() 
             recv_buffer = []
-            radio.read(recv_buffer, radio.getDynamicPayloadSize())
+            radio.read(recv_buffer)
             print(recv_buffer)
             radio.stopListening()
 
