@@ -10,7 +10,7 @@ GPIO.setup(17, GPIO.OUT)
 GPIO.output(17, GPIO.HIGH)
 
 
-def sendSync():                                                                             
+def sendSync():                                                                              
     command = "SYNC"
     message = list(command)    
     for x in range(0, device_count):
@@ -32,7 +32,8 @@ def Poll():
             radio.openReadingPipe(piperead, RXMASTER[x])
             radio.startListening() 
             recv_buffer = []
-            recv_buffer=radio.read(radio.getDynamicPayloadSize()) 
+            radio.read(recv_buffer, radio.getDynamicPayloadSize())
+            print(recv_buffer)
             radio.stopListening()
 
 
