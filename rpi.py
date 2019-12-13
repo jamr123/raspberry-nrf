@@ -5,6 +5,7 @@ import spidev
 
 
 GPIO.setmode(GPIO.BCM)
+GPIO.cleanup()
 
 def sendSync():                                                                              
     radio.openWritingPipe(masterAddress[0])            
