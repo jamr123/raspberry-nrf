@@ -49,6 +49,9 @@ radio.begin(0, 17)
 
 radio.setRetries(15,15)
 radio.setPayloadSize(32)
+radio.setChannel(0x64)
+radio.setDataRate(NRF24.BR_1MBPS)
+radio.setPALevel(NRF24.PA_MIN)
 radio.setAutoAck(True)
 radio.enableDynamicPayloads()
 radio.enableAckPayload()
@@ -71,12 +74,11 @@ cycle_number = 0
   
 while True: 
     signal.signal(signal.SIGINT, signal_handler)
-    radio.printDetails()
     command = "SYNC"
     message = list(command)
 
     # send a packet to receiver
     radio.write(message)
     print("Sent: {}".format(message))
-    time.sleep(5)                    
+    time.sleep(1)                    
  
