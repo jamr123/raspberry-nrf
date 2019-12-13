@@ -68,5 +68,5 @@ while True:
     # send a packet to receiver
     radio.write(message)
     print("Sent: {}".format(message))
-    time.sleep(5)                    
+    time.sleep(1)                    
     

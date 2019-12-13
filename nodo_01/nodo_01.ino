@@ -29,10 +29,10 @@ void setup(void)
 
 void loop(void)
 {
-    
-  
- getData();
- showData();
+
+
+  getData();
+  showData();
 
 }
 
@@ -49,7 +49,7 @@ void getData() {
 void showData() {
   if (newData == true) {
     Serial.println(stringMessage);
-    stringMessage="";
+    stringMessage = "";
     newData = false;
   }
 }
