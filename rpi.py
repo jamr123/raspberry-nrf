@@ -62,7 +62,7 @@ receivedMessage = 0
 device_count = 5      
 cycle_number = 0    
 while True: 
-    command = "GET_TEMP"
+    command = "SYNC"
     message = list(command)
 
     # send a packet to receiver

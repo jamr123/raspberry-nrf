@@ -3,7 +3,7 @@
 #include <RF24.h>
 
 RF24 radio(9, 10);
-char receivedMessage[16] = {0};
+char receivedMessage[10];;
 String stringMessage = "";
 bool newData = false;
 
@@ -41,7 +41,8 @@ void getData() {
   if ( radio.available() ) {
     radio.read( &receivedMessage, sizeof(receivedMessage) );
     stringMessage = String(receivedMessage[0]);
- 
+    Serial.println("recive");
+    newData = true;
   }
 }
 
