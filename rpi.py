@@ -35,7 +35,7 @@ def Poll():
                                                                       
     
 def signal_handler(sig, frame):
-    IO.cleanUp()
+    GPIO.cleanup() # this ensures a clean exit 
     sys.exit(1)
 
 
@@ -65,9 +65,10 @@ receivedMessage = 0
 
 device_count = 5      
 cycle_number = 0 
-GPIO.cleanup() # this ensures a clean exit 
-"""   
+
+  
 while True: 
+    signal.signal(signal.SIGINT, signal_handler)
     command = "SYNC"
     message = list(command)
 
@@ -75,4 +76,4 @@ while True:
     radio.write(message)
     print("Sent: {}".format(message))
     time.sleep(1)                    
-"""  
+ 
