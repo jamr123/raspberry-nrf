@@ -37,11 +37,12 @@ def Poll():
                 if (radio.available()): 
                     radio.read(recv_buffer, radio.getDynamicPayloadSize())
             radio.stopListening()
-            
+
             stringdata=""
             for n in recv_buffer:
-                stringdata+=chr(n) 
-            print(stringdata)       
+                stringdata+=chr(n)
+            dts=stringdata.split("*") 
+            print('poll from number: ' + dts[0] + ' address: ' + str(hex(RXMASTER[x]))+' poll data: '+dts[1])     
             
 
 
