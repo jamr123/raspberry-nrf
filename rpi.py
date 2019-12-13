@@ -12,8 +12,7 @@ GPIO.output(17, GPIO.HIGH)
 
 def sendSync():                                                                              
     command = "SYNC"
-    message = list(command)
-    print("Sent: {}".format(message))     
+    message = list(command)    
     for x in range(0, device_count):
         radio.openWritingPipe(TXMASTER[x])        
         syn_write = bool (radio.write(message))              
@@ -32,7 +31,7 @@ def Poll():
         if (syn_write == 1):
             radio.startListening() 
             radio.openReadingPipe(piperead, RXMASTER[x])
-            radio.read(receivedMessage, radio.getDynamicPayloadSize())
+            radio.read(receivedMessage)
             print("Received POLL: {}".format(receivedMessage))
             radio.stopListening()
 
