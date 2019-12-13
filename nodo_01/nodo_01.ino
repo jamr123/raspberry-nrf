@@ -75,14 +75,12 @@ void showData() {
 }
 
 void sendPool() {
-
-  str="HOLA";
-  str.toCharArray(response,4);
-  char dato[]="--> DATO ";
-  strcat(dato,response);
+  String stringOne = "A long integer: ";
+  char charBuf[20];
+  stringOne.toCharArray(charBuf, 20);
   radio.stopListening();
-  Serial.println("Enviando datos...");
-  bool ok = radio.write(&dato,strlen(dato));
+  
+  bool ok = radio.write(&charBuf,strlen(charBuf));
   radio.startListening(); 
 
 }

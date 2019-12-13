@@ -32,8 +32,12 @@ def Poll():
             radio.openReadingPipe(piperead, RXMASTER[x])
             radio.startListening() 
             recv_buffer = []
-            radio.read(recv_buffer, radio.getDynamicPayloadSize())
-            print(str(recv_buffer))
+            start_time =time.time()                        
+             while(time.time()-start_time <0.05):
+                 if (radio.available()): 
+                    
+                    radio.read(recv_buffer, radio.getDynamicPayloadSize())
+                    print(str(recv_buffer))
             radio.stopListening()
 
 
