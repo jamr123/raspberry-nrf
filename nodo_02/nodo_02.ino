@@ -7,7 +7,7 @@ char receivedMessage[10];;
 String stringMessage = "";
 bool newData = false;
 
-const uint64_t TX = 0xAAAAAAAA01LL;
+const uint64_t TX = 0xAAAAAAAA02LL;
 const uint64_t RX = 0xFFFFFFFFFFLL;
 void setup(void)
 {
