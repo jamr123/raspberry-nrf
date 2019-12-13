@@ -89,5 +89,5 @@ while True:
     Poll()
     cycle_number=cycle_number+1
     print("\r\n\r\n")
-    time.sleep(5)                    
+    time.sleep(1)                    
  
