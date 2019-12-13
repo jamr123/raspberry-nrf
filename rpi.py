@@ -92,8 +92,10 @@ while True:
     print(" ")
     print("SYNC >>>>>>") 
     sendSync()
+    print(" ")
     time.sleep(0.1)
     print("POLL >>>>>>") 
     Poll()
+    cycle_number=cycle_number+1
     time.sleep(3)                    
  
