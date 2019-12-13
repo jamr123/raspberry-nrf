@@ -17,13 +17,13 @@ void setup(void)
   radio.begin();
   radio.setPALevel(RF24_PA_MIN);
   radio.openWritingPipe(TX);
-  radio.openReadingPipe(0, RX);
+  radio.openReadingPipe(1, RX);
   radio.setDataRate( RF24_1MBPS );
   radio.setAutoAck(1);
   radio.enableAckPayload();
   radio.enableDynamicPayloads();
   radio.setRetries(15, 15);
-  radio.setChannel(0x32);
+  radio.setChannel(0x64);
   radio.printDetails(); 
   radio.startListening();
   Serial.println("inicio");
