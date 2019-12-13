@@ -8,7 +8,8 @@ String stringMessage = "";
 bool newData = false;
 
 const uint64_t TX = 0xAAAAAAAA02LL;
-const uint64_t RX = 0xFFFFFFFFFFLL;
+const uint64_t RX = 0xAAAAAAAAFFLL;
+const uint64_t RX = 0xAAAAAAFF02LL;
 void setup(void)
 {
   while (!Serial);

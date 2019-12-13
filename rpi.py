@@ -13,7 +13,9 @@ GPIO.output(17, GPIO.HIGH)
 def sendSync():                                                                              
     command = "SYNC"
     message = list(command)
-    print("Sent: {}".format(message))                            
+    print("Sent: {}".format(message))     
+    for val in TXMASTER:
+        print(val)                       
     syn_write = bool (radio.write(message))                 
     if (syn_write == 0):                                            
         print(' syn write failed')   
@@ -44,8 +46,8 @@ def signal_handler(sig, frame):
     sys.exit(1)
 
 
-TX = [[0xAA, 0xAA, 0xAA, 0xAA, 0xFF]]
-RX = [[0xAA, 0xAA, 0xAA, 0xAA, 0x01],[0xAA, 0xAA, 0xAA, 0xAA, 0x02],[0xAA, 0xAA, 0xAA, 0xAA, 0x03],[0xAA, 0xAA, 0xAA, 0xAA, 0x04],[0xAA, 0xAA, 0xAA, 0xAA, 0x05]]
+TXMASTER = [[0xAA, 0xAA, 0xAA, 0xAA, 0xF1],[0xAA, 0xAA, 0xAA, 0xAA, 0xF2],[0xAA, 0xAA, 0xAA, 0xAA, 0xF3],[0xAA, 0xAA, 0xAA, 0xAA, 0xF4],[0xAA, 0xAA, 0xAA, 0xAA, 0xF5]]
+RXMASTER = [[0xAA, 0xAA, 0xAA, 0xAA, 0x01],[0xAA, 0xAA, 0xAA, 0xAA, 0x02],[0xAA, 0xAA, 0xAA, 0xAA, 0x03],[0xAA, 0xAA, 0xAA, 0xAA, 0x04],[0xAA, 0xAA, 0xAA, 0xAA, 0x05]]
 
 radio = NRF24(GPIO, spidev.SpiDev())
 radio.begin(0, 17)
@@ -60,12 +62,12 @@ radio.setAutoAck(True)
 radio.enableDynamicPayloads()
 radio.enableAckPayload()
 
-radio.openWritingPipe(TX[0])
-radio.openReadingPipe(0, RX[0])
-radio.openReadingPipe(1, RX[1])
-radio.openReadingPipe(2, RX[2])
-radio.openReadingPipe(3, RX[3])
-radio.openReadingPipe(4, RX[4])
+#radio.openWritingPipe(TX[0])
+#radio.openReadingPipe(0, RX[0])
+#radio.openReadingPipe(1, RX[1])
+#radio.openReadingPipe(2, RX[2])
+#radio.openReadingPipe(3, RX[3])
+#radio.openReadingPipe(4, RX[4])
 
 
 radio.printDetails()
