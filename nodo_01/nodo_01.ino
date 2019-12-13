@@ -1,55 +1,43 @@
-#include <SPI.h>
-#include <nRF24L01.h>
-#include <RF24.h>
+#include<SPI.h>                   // spi library for connecting nrf
+#include <Wire.h>                             // i2c libary fro 16x2 lcd display
+#include<RF24.h>                  // nrf library
+#include <LiquidCrystal_I2C.h>     // 16x2 lcd display library
 
-RF24 radio(9, 10);
-char receivedMessage[10];;
-String stringMessage = "";
-bool newData = false;
+LiquidCrystal_I2C lcd(0x27, 16, 2);         // i2c address is 0x27
 
-const uint64_t TX = 0xAAAAAAAA01LL;
-const uint64_t RX = 0xAAAAAAAAFFLL;
-void setup(void)
-{
-  while (!Serial);
-  Serial.begin(9600);
-  radio.begin();
-  radio.setPALevel(RF24_PA_MIN);
-  radio.openWritingPipe(TX);
-  radio.openReadingPipe(0, RX);
-  radio.setDataRate( RF24_1MBPS );
-  radio.setAutoAck(1);
-  radio.enableAckPayload();
-  radio.enableDynamicPayloads();
-  radio.setRetries(15, 15);
-  radio.setChannel(0x64);
-  radio.startListening();
-  Serial.println("inicio");
+RF24 radio(9, 10) ;  // ce, csn pins    
+void setup(void) {
+  while (!Serial) ;
+  Serial.begin(9600) ;     // start serial monitor baud rate
+  Serial.println("Starting.. Setting Up.. Radio on..") ; // debug message
+  radio.begin();        // start radio at ce csn pin 9 and 10
+  radio.setPALevel(RF24_PA_MAX) ;   // set power level
+  radio.setChannel(0x64) ;            // set chanel at 76
+  const uint64_t pipe = 0xE0E0F1F1E0LL ;    // pipe address same as sender i.e. raspberry pi
+  radio.openReadingPipe(1, pipe) ;        // start reading pipe 
+  radio.enableDynamicPayloads() ;
+  radio.powerUp() ;          
+  Wire.begin();                 //start i2c address
+  lcd.begin();                    // start lcd 
+  lcd.home();                       
+  lcd.print("Ready to Receive");  // print starting message on lcd 
+  delay(2000);
+  lcd.clear();
 }
 
-void loop(void)
-{
-    
-  
- getData();
- showData();
+void loop(void) {
 
-}
-
-
-void getData() {
-  if ( radio.available() ) {
-    radio.read( &receivedMessage, sizeof(receivedMessage) );
-    stringMessage = String(receivedMessage[0]);
-    Serial.println("recive");
-    newData = true;
+  radio.startListening() ;        // start listening forever
+  char receivedMessage[32] = {0} ;   // set incmng message for 32 bytes
+  if (radio.available()) {       // check if message is coming
+    radio.read(receivedMessage, sizeof(receivedMessage));    // read the message and save
+    Serial.println(receivedMessage) ;    // print message on serial monitor 
+    Serial.println("Turning off the radio.") ;   // print message on serial monitor
+    radio.stopListening() ;   // stop listening radio
+    String stringMessage(receivedMessage) ;     // change char to string
+    lcd.clear();    // clear screen for new message
+    delay(1000);    // delay of 1 second 
+    lcd.print(stringMessage);   // print received mesage
   }
-}
-
-void showData() {
-  if (newData == true) {
-    Serial.println(stringMessage);
-    stringMessage="";
-    newData = false;
-  }
+  delay(10);
 }
