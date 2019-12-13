@@ -29,8 +29,8 @@ def Poll():
         radio.openWritingPipe(TXMASTER[x])
         syn_write = bool (radio.write(message))              
         if (syn_write == 1):
+            radio.openReadingPipe(piperead, RXMASTER[x])
             radio.startListening() 
-            radio.openReadingPipe(1, RXMASTER[x])
             recv_buffer = []
             radio.read(recv_buffer, radio.getDynamicPayloadSize())
             print(recv_buffer)
