@@ -31,10 +31,13 @@ def Poll():
         if (syn_write == 1):
             radio.openReadingPipe(piperead, RXMASTER[x])
             radio.startListening() 
-            if radio.available(): 
-                    recv_buffer = []
-                    radio.read(recv_buffer, radio.getDynamicPayloadSize())
-                    print(recv_buffer)
+            start_time =time.time()                        
+            while(time.time()-start_time <0.05):
+                if (radio.available()): 
+                receivedMessage = radio.read(radio.getDynamicPayloadSize()) 
+                #x_int =int.from_bytes(receivedMessage, byteorder='little', signed=False) #Python 3 feature. freelancer is using 2.7?
+                x_int = (receivedMessage[1] << 8) + receivedMessage[0] 
+                print(x_int)
             radio.stopListening()
 
 
