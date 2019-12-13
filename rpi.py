@@ -18,12 +18,27 @@ def sendSync():
         radio.openWritingPipe(val)        
         syn_write = bool (radio.write(message))              
         if (syn_write == 0):                                            
-            print("Fail sync address {}".format(val).hex())   
+            print("Fail sync address {}".format(val))
                                   
 
-def Poll():                                                                                 
-    for x in range(0, device_count):                   # use 5 device now, so x = 0, 1, 2, 3, 4                  
-        radio.startListening()
+def Poll(): 
+    piperead=0                                                                                
+    for x in range(0, device_count):
+        piperead=x+1 
+        command = "POLL"
+        message = list(command)                                  
+        radio.openWritingPipe(TXMASTER[x])
+        syn_write = bool (radio.write(message))              
+        if (syn_write == 1):
+            radio.startListening() 
+            radio.openReadingPipe(piperead, RXMASTER[x])
+            radio.read(receivedMessage, radio.getDynamicPayloadSize())
+            print("Received POLL: {}".format(receivedMessage))
+            radio.stopListening()
+        else:
+            print("Fail sync address {}".format(TXMASTER[x]))
+
+
   #radio.startListening()                                                                   
   #radio.stopListening()   
 def signal_handler(sig, frame):
@@ -57,7 +72,7 @@ radio.enableAckPayload()
 
 radio.printDetails()
 radio.powerUp()
-receivedMessage = 0                          
+receivedMessage = []                          
 
 device_count = 5      
 cycle_number = 0 
@@ -66,5 +81,7 @@ cycle_number = 0
 while True: 
     signal.signal(signal.SIGINT, signal_handler)
     sendSync()
+    time.sleep(0.1)
+    Poll()
     time.sleep(1)                    
  
