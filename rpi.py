@@ -49,7 +49,7 @@ radio.setAutoAck(True)
 radio.enableDynamicPayloads()
 radio.enableAckPayload()
 
-radio.openWritingPipe(masterAddress[0])
+radio.openWritingPipe(TX[0])
 radio.openReadingPipe(0, RX[0])
 radio.openReadingPipe(1, RX[1])
 radio.openReadingPipe(2, RX[2])
