@@ -11,8 +11,8 @@ String str1;
 long randNumber = 0;
 bool newData = false;
 
-const uint64_t TX0 = 0xAAAAAAAA02LL;
-const uint64_t RX0 = 0xAAAAAAAAF2LL;
+const uint64_t TX0 = 0xAAAAAAAA01LL;
+const uint64_t RX0 = 0xAAAAAAAAF1LL;
 void setup(void)
 {
   while (!Serial);
@@ -76,7 +76,7 @@ void showData() {
 
 void sendPool(long val) {
   
-  str1 ="01*"+String(val);
+  str1 ="00*"+String(val);
   str1.toCharArray(charBuf, 10);
   radio.stopListening();
   
