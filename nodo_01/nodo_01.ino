@@ -1,5 +1,7 @@
-#include<SPI.h>
-#include<RF24.h>
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+
 RF24 radio(9, 10);
 char receivedMessage[16] = {0};
 String stringMessage = "";
@@ -13,13 +15,14 @@ void setup(void)
   Serial.begin(9600);
   radio.begin();
   radio.setPALevel(RF24_PA_MIN);
-  radio.setChannel(0x70);
   radio.openWritingPipe(TX);
   radio.openReadingPipe(0, RX);
   radio.setDataRate( RF24_1MBPS );
   radio.setAutoAck(1);
   radio.enableAckPayload();
   radio.enableDynamicPayloads();
+  radio.setRetries(15, 15);
+  radio.setChannel(0x64);
   radio.startListening();
   Serial.println("inicio");
 }
