@@ -60,7 +60,6 @@ device_count = 5
 cycle_number = 0    
 while True: 
     command = "GET_TEMP"
-    message = &#91;&#93;
     message = list(command)
 
     # send a packet to receiver
