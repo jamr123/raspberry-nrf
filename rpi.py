@@ -14,11 +14,11 @@ def sendSync():
     command = "SYNC"
     message = list(command)
     print("Sent: {}".format(message))     
-    for val in TXMASTER: 
-        radio.openWritingPipe(val)        
+    for x in range(0, device_count):
+        radio.openWritingPipe(TXMASTER[x])        
         syn_write = bool (radio.write(message))              
-        if (syn_write == 0):                                            
-            print("Fail sync address {}".format(val))
+        if (syn_write == 1):                                            
+            print("SYNC RADIO: ",x)
                                   
 
 def Poll(): 
@@ -35,8 +35,6 @@ def Poll():
             radio.read(receivedMessage, radio.getDynamicPayloadSize())
             print("Received POLL: {}".format(receivedMessage))
             radio.stopListening()
-        else:
-            print("Fail sync address {}".format(TXMASTER[x]))
 
 
   #radio.startListening()                                                                   
