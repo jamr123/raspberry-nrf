@@ -10,9 +10,11 @@ GPIO.setup(17, GPIO.OUT)
 GPIO.output(17, GPIO.HIGH)
 
 
-def sendSync():                                                                              
+def sendSync(): 
+                                                                                 
     command = "SYNC"
-    message[5] = list(command)    
+    message[len(command)] 
+    message = list(command)    
     for x in range(0, device_count):
         radio.openWritingPipe(TXMASTER[x])        
         syn_write = bool (radio.write(message))              
