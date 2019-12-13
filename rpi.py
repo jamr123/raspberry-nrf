@@ -36,7 +36,7 @@ def Poll():
             while(time.time()-start_time <0.05):
                 if (radio.available()): 
                     radio.read(recv_buffer, radio.getDynamicPayloadSize())
-                    print(str(recv_buffer))
+            print(str(recv_buffer))       
             radio.stopListening()
 
 
