@@ -17,7 +17,7 @@ void setup(void)
   radio.begin();
   radio.setPALevel(RF24_PA_MIN);
   radio.openWritingPipe(TX);
-  radio.openReadingPipe(1, RX);
+  radio.openReadingPipe(0, RX);
   radio.setDataRate( RF24_1MBPS );
   radio.setAutoAck(1);
   radio.enableAckPayload();
