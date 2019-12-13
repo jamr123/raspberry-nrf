@@ -83,19 +83,18 @@ receivedMessage = []
 
 device_count = 5      
 cycle_number = 0 
-
+print("\r\n\r\n")
   
 while True: 
     
     signal.signal(signal.SIGINT, signal_handler)
     print("CYCLE: "+str(cycle_number ))
-    print(" ")
     print("SYNC >>>>>>") 
     sendSync()
-    print(" ")
     time.sleep(0.1)
     print("POLL >>>>>>") 
     Poll()
     cycle_number=cycle_number+1
+    print("\r\n\r\n")
     time.sleep(3)                    
  
