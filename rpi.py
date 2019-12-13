@@ -11,13 +11,10 @@ GPIO.output(17, GPIO.HIGH)
 
 
 def sendSync(): 
-                                                                                 
-    command = "SYNC"
-    message[len(command)] 
     message = list(command)    
     for x in range(0, device_count):
         radio.openWritingPipe(TXMASTER[x])        
-        syn_write = bool (radio.write(message))              
+        syn_write = bool (radio.write('A'))              
         if (syn_write == 1):                                            
             print("SYNC RADIO: ",x)
                                   
@@ -25,11 +22,9 @@ def sendSync():
 def Poll(): 
     piperead=0                                                                                
     for x in range(0, device_count):
-        piperead=x+1 
-        command = "POLL"
-        message = list(command)                                  
+        piperead=x+1                                  
         radio.openWritingPipe(TXMASTER[x])
-        syn_write = bool (radio.write(message))              
+        syn_write = bool (radio.write('B'))              
         if (syn_write == 1):
             radio.openReadingPipe(piperead, RXMASTER[x])
             radio.startListening() 
