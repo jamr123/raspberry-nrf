@@ -18,7 +18,7 @@ def sendSync():
         radio.openWritingPipe(val)        
         syn_write = bool (radio.write(message))              
         if (syn_write == 0):                                            
-            print("Fail sync address {}".format(val))   
+            print("Fail sync address {}".format(val).hex())   
                                   
 
 def Poll():                                                                                 
