@@ -16,7 +16,7 @@ def sendSync():
     print("Sent: {}".format(message))     
     for val in TXMASTER: 
         radio.openWritingPipe(val)        
-        syn_write = bool (radio.write(message)) -                
+        syn_write = bool (radio.write(message))              
         if (syn_write == 0):                                            
             print(' syn write failed')   
                                   
