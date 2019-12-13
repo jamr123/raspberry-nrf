@@ -18,29 +18,14 @@ def sendSync():
         radio.openWritingPipe(val)        
         syn_write = bool (radio.write(message))              
         if (syn_write == 0):                                            
-            print(' syn write failed')   
+            print(' syn write failed',val)   
                                   
 
 def Poll():                                                                                 
-     for x in range(0, device_count):                   # use 5 device now, so x = 0, 1, 2, 3, 4                  
-         radio.openWritingPipe(slaveAddress[x])            
-         dataToSend = bytearray([01])                   # if you like, you can change 01 to be a string or a character or anything
-                                                        # please try to control "dataToSend". we can use it to poll specific arduino device's data
-         time.sleep(0.05)                                   
-         poll_write = bool (radio.write(dataToSend, 0))       
-         if poll_write:     
-             radio.openReadingPipe(x+1, slaveAddress[x])   
-             radio.startListening()                         
-             start_time =time.time()                        
-             while(time.time()-start_time <0.02):            
-                 if (radio.available()): 
-                    receivedMessage = radio.read(radio.getDynamicPayloadSize())                   
-                    x_int = (receivedMessage[1] << 8) + receivedMessage[0]
-                    Measurements [x] = x_int
-                    print(x_int)                  
-         radio.stopListening() 
-                                                                      
-    
+    for x in range(0, device_count):                   # use 5 device now, so x = 0, 1, 2, 3, 4                  
+        radio.startListening()
+  #radio.startListening()                                                                   
+  #radio.stopListening()   
 def signal_handler(sig, frame):
     GPIO.cleanup() # this ensures a clean exit 
     sys.exit(1)

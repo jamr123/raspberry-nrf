@@ -5,6 +5,11 @@
 RF24 radio(9, 10);
 char receivedMessage[10];;
 String stringMessage = "";
+int response [2];
+int numRadio = 2;
+int data = 200;
+
+long randNumber = 0;
 bool newData = false;
 
 const uint64_t TX0 = 0xAAAAAAAA02LL;
@@ -24,7 +29,7 @@ void setup(void)
   radio.enableDynamicPayloads();
   radio.setRetries(15, 15);
   radio.setChannel(0x20);
-  radio.printDetails(); 
+  radio.printDetails();
   radio.startListening();
   Serial.println("inicio");
 }
@@ -51,17 +56,42 @@ void getData() {
 void showData() {
   if (newData == true) {
     Serial.println(stringMessage);
+    if (stringMessage == "SYNC") {
+      randNumber = random(0, 50000);
+      Serial.println(randNumber);
+      delayMicroseconds(randNumber);
+    }
+    if (stringMessage == "POLL") {
+
+       sendPool();
+    }
+
     stringMessage = "";
     newData = false;
   }
 }
 
-int serial_putc( char c, FILE * ) 
+void sendPool() {
+
+  radio.stopListening();
+
+  response[0] = numRadio;
+  response[1] = data;
+  radio.write(response, sizeof(response));
+
+  radio.startListening();
+
+}
+
+
+
+
+int serial_putc( char c, FILE * )
 {
   Serial.write( c );
 
   return c;
-} 
+}
 
 void printf_begin(void)
 {
