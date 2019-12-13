@@ -33,4 +33,8 @@ while(1):
  
     print("Translating the receivedMessage into unicode characters")
     string = ""
-    
+    for n in receivedMessage:
+        # Decode into standard unicode set
+        if (n &gt;= 32 and n &lt;= 126):
+            string += chr(n)
+    print("Out received message decodes to: {}".format(string))
