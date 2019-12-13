@@ -38,8 +38,8 @@ def Poll():
                     radio.read(recv_buffer, radio.getDynamicPayloadSize()) 
             str1=" "
             for ele in recv_buffer:  
-                str1 += ele
-            print(str())       
+                str1 += str(ele)
+            print(str1)       
             radio.stopListening()
 
 
