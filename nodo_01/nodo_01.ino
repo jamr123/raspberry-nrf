@@ -13,6 +13,7 @@ void setup(void)
 {
   while (!Serial);
   Serial.begin(9600);
+  printf_begin();
   radio.begin();
   radio.setPALevel(RF24_PA_MIN);
   radio.openWritingPipe(TX);
@@ -23,6 +24,7 @@ void setup(void)
   radio.enableDynamicPayloads();
   radio.setRetries(15, 15);
   radio.setChannel(0x32);
+  radio.printDetails(); 
   radio.startListening();
   Serial.println("inicio");
 }
@@ -52,4 +54,16 @@ void showData() {
     stringMessage = "";
     newData = false;
   }
+}
+
+int serial_putc( char c, FILE * ) 
+{
+  Serial.write( c );
+
+  return c;
+} 
+
+void printf_begin(void)
+{
+  fdevopen( &serial_putc, 0 );
 }
