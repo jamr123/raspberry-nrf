@@ -7,8 +7,8 @@ char receivedMessage[10];;
 String stringMessage = "";
 bool newData = false;
 
-const uint64_t TX = 0xAAAAAAAA01LL;
-const uint64_t RX = 0xFFFFFFFFFFLL;
+const uint64_t TX0 = 0xAAAAAAAA01LL;
+const uint64_t RX0 = 0xAAAAAAAAF1LL;
 void setup(void)
 {
   while (!Serial);
@@ -16,8 +16,8 @@ void setup(void)
   printf_begin();
   radio.begin();
   radio.setPALevel(RF24_PA_MIN);
-  radio.openWritingPipe(TX);
-  radio.openReadingPipe(0, RX);
+  radio.openWritingPipe(TX0);
+  radio.openReadingPipe(0, RX0);
   radio.setDataRate( RF24_1MBPS );
   radio.setAutoAck(1);
   radio.enableAckPayload();

@@ -14,11 +14,11 @@ def sendSync():
     command = "SYNC"
     message = list(command)
     print("Sent: {}".format(message))     
-    for val in TXMASTER:
-        print(val)                       
-    syn_write = bool (radio.write(message))                 
-    if (syn_write == 0):                                            
-        print(' syn write failed')   
+    for val in TXMASTER: 
+        radio.openWritingPipe(val)        
+        syn_write = bool (radio.write(message)) -                
+        if (syn_write == 0):                                            
+            print(' syn write failed')   
                                   
 
 def Poll():                                                                                 
