@@ -1,8 +1,10 @@
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)
 from lib_nrf24 import NRF24
 import time
 import spidev
+
+
+GPIO.setmode(GPIO.BCM)
 
 def sendSync():                                                                              
     radio.openWritingPipe(masterAddress[0])            
