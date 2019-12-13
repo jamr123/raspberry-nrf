@@ -3,7 +3,6 @@ from lib_nrf24 import NRF24
 import time
 import spidev
 
-GPIO.cleanup()
 GPIO.setmode(GPIO.BCM)
 
 
@@ -61,7 +60,9 @@ radio.printDetails()
 receivedMessage = 0                          
 
 device_count = 5      
-cycle_number = 0    
+cycle_number = 0 
+GPIO.cleanup() # this ensures a clean exit 
+"""   
 while True: 
     command = "SYNC"
     message = list(command)
@@ -70,4 +71,4 @@ while True:
     radio.write(message)
     print("Sent: {}".format(message))
     time.sleep(1)                    
-    
+"""  
