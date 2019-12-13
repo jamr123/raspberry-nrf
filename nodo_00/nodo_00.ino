@@ -11,8 +11,8 @@ String str1;
 long randNumber = 0;
 bool newData = false;
 
-const uint64_t TX0 = 0xAAAAAAAA01LL;
-const uint64_t RX0 = 0xAAAAAAAAF1LL;
+const uint64_t TX0 = 0xAAAAAAAA00LL;
+const uint64_t RX0 = 0xAAAAAAAAF0LL;
 void setup(void)
 {
   while (!Serial);
