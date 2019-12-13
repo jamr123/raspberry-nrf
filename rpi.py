@@ -11,9 +11,10 @@ GPIO.output(17, GPIO.HIGH)
 
 
 def sendSync():                                                                              
-    radio.openWritingPipe(masterAddress[0])            
-    dataToSend = bytearray([999])                    ## if you like, you can change 999 to be a string or a character or anything          
-    syn_write = bool (radio.write(dataToSend, 1))                 
+    command = "SYNC"
+    message = list(command)
+    print("Sent: {}".format(message))                            
+    syn_write = bool (radio.write(message))                 
     if (syn_write == 0):                                            
         print(' syn write failed')   
                                   
@@ -77,11 +78,6 @@ cycle_number = 0
   
 while True: 
     signal.signal(signal.SIGINT, signal_handler)
-    command = "SYNC"
-    message = list(command)
-
-    # send a packet to receiver
-    radio.write(message)
-    print("Sent: {}".format(message))
+    sendSync()
     time.sleep(1)                    
  
