@@ -23,8 +23,6 @@ def sendSync():
 def Poll(): 
     piperead=0                                                                                
     for x in range(0, device_count):
-
-        print(piperead)
         command = "POLL"
         message = list(command)                                  
         radio.openWritingPipe(TXMASTER[x])
