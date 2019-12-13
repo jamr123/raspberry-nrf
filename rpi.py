@@ -46,11 +46,11 @@ RX = [[0xAA, 0xAA, 0xAA, 0xAA, 0x01],[0xAA, 0xAA, 0xAA, 0xAA, 0x02],[0xAA, 0xAA,
 
 radio = NRF24(GPIO, spidev.SpiDev())
 radio.begin(0, 25) 
+
 radio.setRetries(15,15)
 radio.setPayloadSize(32)
 radio.setChannel(0x64)
-
-radio.setDataRate(NRF24.BR_2MBPS)
+radio.setDataRate(NRF24.BR_1MBPS)
 radio.setPALevel(NRF24.PA_MIN)
 radio.setAutoAck(True)
 radio.enableDynamicPayloads()
