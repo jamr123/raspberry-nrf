@@ -62,7 +62,9 @@ radio.openReadingPipe(2, RX[2])
 radio.openReadingPipe(3, RX[3])
 radio.openReadingPipe(4, RX[4])
 
+
 radio.printDetails()
+radio.powerUp()
 receivedMessage = 0                          
 
 device_count = 5      
