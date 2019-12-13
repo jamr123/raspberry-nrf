@@ -32,7 +32,7 @@ def Poll():
             radio.startListening() 
             radio.openReadingPipe(piperead, RXMASTER[x])
             radio.read(receivedMessage)
-            print("Received POLL: {}".format(receivedMessage))
+            print(receivedMessage[0])
             radio.stopListening()
 
 
