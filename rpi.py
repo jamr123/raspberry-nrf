@@ -42,7 +42,7 @@ def Poll():
             for n in recv_buffer:
                 stringdata+=chr(n)
             dts=stringdata.split("*") 
-            print('poll from number: ' + dts[0] + ' address: ' + str(hex(RXMASTER[x]))+' poll data: '+dts[1])     
+            print('poll from number: ' + dts[0]  +'poll data: '+dts[1])     
             
 
 
