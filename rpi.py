@@ -1,86 +1,132 @@
-import RPi.GPIO as GPIO
 from lib_nrf24 import NRF24
 import time
-import spidev
-import signal
-import sys
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(17, GPIO.OUT)
-GPIO.output(17, GPIO.HIGH)
 
 
-def sendSync():                                                                              
-    radio.openWritingPipe(masterAddress[0])            
-    dataToSend = bytearray([999])                    ## if you like, you can change 999 to be a string or a character or anything          
-    syn_write = bool (radio.write(dataToSend, 1))                 
-    if (syn_write == 0):                                            
-        print(' syn write failed')   
-                                  
+pipes = [[0xe7, 0xe7, 0xe7, 0xe7, 0xe7], [0xc2, 0xc2, 0xc2, 0xc2, 0xc2]]
 
-def Poll():                                                                                 
-     for x in range(0, device_count):                   # use 5 device now, so x = 0, 1, 2, 3, 4                  
-         radio.openWritingPipe(slaveAddress[x])            
-         dataToSend = bytearray([01])                   # if you like, you can change 01 to be a string or a character or anything
-                                                        # please try to control "dataToSend". we can use it to poll specific arduino device's data
-         time.sleep(0.05)                                   
-         poll_write = bool (radio.write(dataToSend, 0))       
-         if poll_write:     
-             radio.openReadingPipe(x+1, slaveAddress[x])   
-             radio.startListening()                         
-             start_time =time.time()                        
-             while(time.time()-start_time <0.02):            
-                 if (radio.available()): 
-                    receivedMessage = radio.read(radio.getDynamicPayloadSize())                   
-                    x_int = (receivedMessage[1] << 8) + receivedMessage[0]
-                    Measurements [x] = x_int
-                    print(x_int)                  
-         radio.stopListening() 
-                                                                      
-    
-def signal_handler(sig, frame):
-    GPIO.cleanup() # this ensures a clean exit 
-    sys.exit(1)
+# Comment re multiple SPIDEV devices:
+# Official spidev documentation is sketchy. Implementation in virtGPIO allows multiple SpiDev() objects.
+# This may not work on RPi? Probably RPi uses alternating open() / xfer2() /close() within one SpiDev() object???
+# On virtGPIO each of multiple SpiDev() stores its own mode and cePin. Multiple RF24 used here becomes easy.
+# This issue affects only using MULTIPLE Spi devices.
 
+##################################################################
+# SET UP RADIO1 - PTX
 
-TX = [[0xFF, 0xFF, 0xFF, 0xFF, 0xFF]]
-RX = [[0xE8, 0xE8, 0xF1, 0xF1, 0xE3],[0xAA, 0xAA, 0xAA, 0xAA, 0x02],[0xAA, 0xAA, 0xAA, 0xAA, 0x03],[0xAA, 0xAA, 0xAA, 0xAA, 0x04],[0xAA, 0xAA, 0xAA, 0xAA, 0x05]]
+radio1 = NRF24(GPIO, GPIO.SpiDev())
+radio1.begin(17)       # SPI-CE=RF24-CSN=pin9, no RF24-CE pin
+time.sleep(1)
+radio1.setRetries(15,15)
+radio1.setPayloadSize(32)
+radio1.setChannel(0x62)
+radio1.setDataRate(NRF24.BR_2MBPS)
+radio1.setPALevel(NRF24.PA_MIN)
+radio1.setAutoAck(True)
+radio1.enableDynamicPayloads()
+radio1.enableAckPayload()
 
-radio = NRF24(GPIO, spidev.SpiDev())
-radio.begin(0, 17) 
+radio1.openWritingPipe(pipes[1])
+radio1.openReadingPipe(1, pipes[0])
 
-radio.setRetries(15,15)
-radio.setPayloadSize(32)
-radio.setChannel(0x20)
-radio.setDataRate(NRF24.BR_1MBPS)
-radio.setPALevel(NRF24.PA_MIN)
-radio.setAutoAck(True)
-radio.enableDynamicPayloads()
-radio.enableAckPayload()
-
-radio.openWritingPipe(TX[0])
-radio.openReadingPipe(0, RX[0])
-radio.openReadingPipe(1, RX[1])
-radio.openReadingPipe(2, RX[2])
-radio.openReadingPipe(3, RX[3])
-radio.openReadingPipe(4, RX[4])
+if not radio1.isPVariant():
+    # If radio configures correctly, we confirmed a "plus" (ie "variant") nrf24l01+
+    # Else print diagnostic stuff & exit.
+    radio1.printDetails()
+    # (or we could always just print details anyway, even on good setup, for debugging)
+    print ("NRF24L01+ not found.")
+    exit()
 
 
-radio.printDetails()
-radio.powerUp()
-receivedMessage = 0                          
+##################################################################
+# AND THEN RADIO2 - PRX  - VIRTUALLY IDENTICAL !
 
-device_count = 5      
-cycle_number = 0 
+radio2 = NRF24(GPIO, GPIO.SpiDev())
+radio2.begin(10)    # SPI-CE=RF24-CSN=pin10, no RF24-CE pin
+time.sleep(1)
+radio2.setRetries(15,15)
 
-  
-while True: 
-    signal.signal(signal.SIGINT, signal_handler)
-    command = "SYNC"
-    message = list(command)
+radio2.setPayloadSize(32)
+radio2.setChannel(0x62)
+radio2.setDataRate(NRF24.BR_2MBPS)
+radio2.setPALevel(NRF24.PA_MIN)
 
+radio2.setAutoAck(True)
+radio2.enableDynamicPayloads()
+radio2.enableAckPayload()
+
+radio2.openWritingPipe(pipes[0])
+radio2.openReadingPipe(1, pipes[1])
+
+radio2.startListening()
+
+if not radio2.isPVariant():
+    radio2.stopListening()
+    radio2.printDetails()
+    print ("NRF24L01+ not found.")
+    exit()
+
+
+##################################################################
+c1 = 1
+def serviceRadio1():
+    # Let's deal with PTX - radio1:
+
+    print ("TX:")
+    global c1
+    global radio1
+    buf = ['H', 'E', 'L', 'O',(c1 & 255)]   # something to recognise at other end
+    c1 += 1
     # send a packet to receiver
-    radio.write(message)
-    print("Sent: {}".format(message))
-    time.sleep(1)                    
- 
+    radio1.write(buf)
+    # RF24 handles all timeouts, retries and ACKs and ACK-payload
+    # So the call to radio.write() only returns after ack and its payload have finished
+    print ("\033[31;1mPTX Sent:\033[0m"),
+    print (buf)
+    # did a payload come back with the ACK?
+    if radio1.isAckPayloadAvailable():
+        pl_buffer=[]
+        radio1.read(pl_buffer, radio1.getDynamicPayloadSize())
+        print ("\033[31;1mPTX Received back:\033[0m"),
+        print (pl_buffer)
+    else:
+        print ("PTX Received: Ack only, no payload")
+
+##################################################################
+c2 = 1
+def serviceRadio2():
+    # Now deal separately with  PRX - radio 2
+    print ("RX?")
+    global c2
+    global radio2
+    akpl_buf = [(c2& 255),1, 2, 3,4,5,6,7,8,9,0,1, 2, 3,4,5,6,7,8]  # We should see this returned to PTX
+    pipe = [0]
+    if not radio2.available(pipe):
+        return
+
+    recv_buffer = []
+    radio2.read(recv_buffer, radio2.getDynamicPayloadSize())
+    print ("\033[32;1mPRX Received:\033[0m") ,
+    print (recv_buffer)
+    c2 += 1
+    if (c2&1) == 0:   # alternate times - so we can see difference beteeen ack-payload and no ack-payload
+        radio2.writeAckPayload(1, akpl_buf, len(akpl_buf))
+        print ("PRX Loaded payload reply:"),
+        print (akpl_buf)
+    else:
+        print ("PRX: (No return payload)")
+
+
+##################################################################
+# We could experiment with differing payload lengths above, up to max 32 bytes each way.
+
+
+c=0
+while True:
+    c += 1
+    print ("Loop %d" % c),
+    if not (c % 3):    # only once per x loops
+        serviceRadio1()   # send something
+        time.sleep(0.01)
+    else:
+        serviceRadio2()    # has it arrived? (if so, maybe send return data)
+        time.sleep(2)   # 1 sec per loop
