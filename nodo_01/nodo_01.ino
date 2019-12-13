@@ -23,7 +23,7 @@ void setup(void)
   radio.enableAckPayload();
   radio.enableDynamicPayloads();
   radio.setRetries(15, 15);
-  radio.setChannel(1);
+  radio.setChannel(0x10);
   radio.printDetails(); 
   radio.startListening();
   Serial.println("inicio");
