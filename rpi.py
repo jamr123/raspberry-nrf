@@ -6,8 +6,8 @@ import signal
 import sys
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(17, GPIO.OUT)
-GPIO.output(17, GPIO.HIGH)
+GPIO.setup(15, GPIO.OUT)
+GPIO.output(15, GPIO.HIGH)
 
 
 def sendSync():                                                                              
