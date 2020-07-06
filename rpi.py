@@ -41,7 +41,8 @@ def Poll():
             for n in recv_buffer:
                 stringdata+=chr(n)
             dts=stringdata.split("*") 
-            print('POLL FROM RADIO: ' + dts[0]  +' DATA: '+dts[1])     
+            print(stringdata)
+            #print('POLL FROM RADIO: ' + dts[0]  +' DATA: '+dts[1])     
             
 
 
@@ -89,5 +90,5 @@ while True:
     Poll()
     cycle_number=cycle_number+1
     print("\r\n\r\n")
-    time.sleep(1)                    
+    time.sleep(3)                    
  
