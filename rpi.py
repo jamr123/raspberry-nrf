@@ -6,8 +6,8 @@ import signal
 import sys
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(15, GPIO.OUT)
-GPIO.output(15, GPIO.HIGH)
+GPIO.setup(17, GPIO.OUT)
+GPIO.output(17, GPIO.HIGH)
 
 
 def sendSync():                                                                              
@@ -40,8 +40,8 @@ def Poll():
             stringdata=""
             for n in recv_buffer:
                 stringdata+=chr(n)
-            dts=stringdata.split("*") 
             print(stringdata)
+            #dts=stringdata.split("*") 
             #print('POLL FROM RADIO: ' + dts[0]  +' DATA: '+dts[1])     
             
 
@@ -57,7 +57,7 @@ TXMASTER = [[0xAA, 0xAA, 0xAA, 0xAA, 0xF0],[0xAA, 0xAA, 0xAA, 0xAA, 0xF1],[0xAA,
 RXMASTER = [[0xAA, 0xAA, 0xAA, 0xAA, 0x00],[0xAA, 0xAA, 0xAA, 0xAA, 0x01],[0xAA, 0xAA, 0xAA, 0xAA, 0x02],[0xAA, 0xAA, 0xAA, 0xAA, 0x03],[0xAA, 0xAA, 0xAA, 0xAA, 0x04]]
 
 radio = NRF24(GPIO, spidev.SpiDev())
-radio.begin(0, 15)
+radio.begin(0, 17)
 time.sleep(1)                         
 
 radio.setRetries(15,15)
